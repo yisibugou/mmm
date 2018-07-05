@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 public class BaseController {
     protected Map<String, Object> result = new HashMap<>();
-
+    
     private String returnResult() {
         return JSON.toJSONString(result);
     }

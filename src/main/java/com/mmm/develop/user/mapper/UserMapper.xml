@@ -1,23 +1,89 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mmm.develop.user.dao.UserDao" >
-    <resultMap id="UserResultMap" type="com.mmm.develop.user.entity.User" >
-        <id column="user_id" property="id" jdbcType="INTEGER" />
-        <result column="user_name" property="userName" jdbcType="VARCHAR" />
-        <result column="password" property="password" jdbcType="VARCHAR" />
-        <result column="user_phone" property="phone" jdbcType="VARCHAR" />
-        <result column="user_email" property="email" jdbcType="VARCHAR" />
-        <result column="user_sex" property="sex" jdbcType="INTEGER" />
-        <result column="birth_date" property="birthDate" jdbcType="VARCHAR" />
-        <result column="head_picture" property="headPicture" jdbcType="VARCHAR" />
-        <result column="introduction" property="introduction" jdbcType="VARCHAR" />
-        <result column="created_time" property="createdTime" jdbcType="VARCHAR" />
-        <result column="last_login_time" property="lastLoginTime" jdbcType="VARCHAR" />
-    </resultMap>
+	<insert id="insertOne" parameterMap="User" keyProperty="id" useGeneratedKeys="true">
+		insert into 
+		user(
+		user_name,
+		password,
+		phone,
+		email,
+		sex,
+		birth_date,
+		head_picture,
+		introduction,
+		created_time,
+		last_login_time)
+		values(
+		#{userName},
+		#{password},
+		#{phone},
+		#{email},
+		#{sex},
+		#{birthdate},
+		#{introduction},
+		#{createdTime},
+		#{lastLoginTime})
+	</insert>
 
-    <select id="get" resultMap="UserResultMap">
-        select *
-        from t_mmm_user
-        where user_id = #{id}
-    </select>
+	<update id="updateOne" parameterMap="User">
+		update user 
+		<set>
+		<if test="userName!=null">
+		user_name=#{userName},
+		</if>
+		<if test="phone!=null">
+		phone=#{phone},
+		</if>
+		<if test="email!=null">
+		email=#{email},
+		</if>
+		<if test="sex!=-1">
+		sex=#{sex},
+		</if>
+		<if test="birthDatee!=null">
+		birth_date=#{birthDate},
+		</if>
+		<if test="introduction!=null">
+		introduction=#{introduction},
+		</if>
+		<if test="createdTime!=null">
+		created_time=#{createdTime},
+		</if>
+		<if test="userName!=null">
+		last_login_time=#{lastLoginTime},
+		</if>
+		</set> 
+		where (id=#{id})
+	</update>
+	
+	<delete id="deleteOne" parameterMap="User">
+		<if test="id!=null">
+			delete from user where id=#{id}
+		</if>
+	</delete>
+	
+	<sql id="queryUserInfo">
+		select * from user
+	</sql>
+	
+	<select id="findOne" parameterType="map" resultType="User">
+		<include refid="queryUserInfo"></include>
+		<where>
+			<choose>
+				<when test="id!=null">
+				   and id=#{id}
+				</when>
+				<when test="phone!=null">
+				   and phone=#{phone}
+				</when>
+				<when test="email!=null">
+				   and email=#{email}
+				</when>
+			</choose>
+		</where>
+	</select>
+	
+	<select id="findMulti" parameterType="map" resultType="User">
+	</select>
 </mapper>
