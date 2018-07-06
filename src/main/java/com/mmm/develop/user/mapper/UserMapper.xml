@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mmm.develop.user.dao.UserDao" >
-	<insert id="insertOne" parameterType="com.mmm.develop.user.entity.User" keyProperty="id" useGeneratedKeys="true">
+	<insert id="insertOne" parameterType="User" keyProperty="id" useGeneratedKeys="true">
 		insert into
 		user(
 		user_name,
@@ -26,7 +26,7 @@
 		#{lastLoginTime})
 	</insert>
 
-	<update id="updateOne" parameterType="com.mmm.develop.user.entity.User">
+	<update id="updateOne" parameterType="User">
 		update user
 		<set>
 			<if test="userName!=null">
@@ -57,7 +57,7 @@
 		where (id=#{id})
 	</update>
 
-	<delete id="deleteOne" parameterType="com.mmm.develop.user.entity.User">
+	<delete id="deleteOne" parameterType="User">
 		<if test="id!=null">
 			delete from user where id=#{id}
 		</if>
@@ -67,7 +67,7 @@
 		select * from user
 	</sql>
 
-	<select id="findOne" parameterType="map" resultType="com.mmm.develop.user.entity.User">
+	<select id="findOne" parameterType="map" resultType="User">
 		<include refid="queryUserInfo"></include>
 		<where>
 			<choose>
@@ -84,6 +84,6 @@
 		</where>
 	</select>
 
-	<select id="findMulti" parameterType="map" resultType="com.mmm.develop.user.entity.User">
+	<select id="findMulti" parameterType="map" resultType="User">
 	</select>
 </mapper>
