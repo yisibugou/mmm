@@ -86,4 +86,11 @@
 
 	<select id="findMulti" parameterType="map" resultType="User">
 	</select>
+
+	<select id="login" parameterType="map" resultType="User">
+		<include refid="queryUserInfo"></include>
+		<where>
+			  and email=#{account} or phone=#{account}
+		</where>
+	</select>
 </mapper>
