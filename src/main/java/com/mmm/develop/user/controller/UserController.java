@@ -59,7 +59,7 @@ public class UserController extends BaseController {
         }
 
         user.setPassword(EncryptUtil.encodeStr(reqjson.getString("password")));
-        if (userService.findOneService(paramMap)!=null) {
+        if (userService.findOneService(paramMap)==null) {
             resultObj = userService.insertOneService(user);
         }else {
             resultObj.put("data", "用户已存在");

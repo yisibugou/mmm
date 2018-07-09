@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mmm.develop.user.dao.UserDao" >
-	<insert id="insertOne" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+	<insert id="insertOne" parameterType="User"  useGeneratedKeys="true" keyProperty="id">
 		insert into
 		user(
 		user_name,
@@ -20,7 +20,8 @@
 		#{phone},
 		#{email},
 		#{sex},
-		#{birthdate},
+		#{birthDate},
+		#{headPicture},
 		#{introduction},
 		#{createdTime},
 		#{lastLoginTime})
@@ -41,7 +42,7 @@
 			<if test="sex!=-1">
 				sex=#{sex},
 			</if>
-			<if test="birthDatee!=null">
+			<if test="birthDate!=null">
 				birth_date=#{birthDate},
 			</if>
 			<if test="introduction!=null">
