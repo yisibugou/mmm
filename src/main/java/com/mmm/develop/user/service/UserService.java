@@ -6,5 +6,4 @@ import com.mmm.develop.common.service.BaseService;
 import com.mmm.develop.user.entity.User;
 
 public interface UserService extends BaseService<User>{
-    User get(Map<String, Object> paramMap);
 }

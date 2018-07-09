@@ -11,34 +11,29 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@Service(value = "UserService")
+@Service(value = "userService")
 public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
 
     @Override
-    public User get(Map<String, Object> paramMap) {
-        return userDao.findOne(paramMap);
-    }
-
-    @Override
     public int insertOne(User user) {
-        return 0;
+        return userDao.insertOne(user);
     }
 
     @Override
     public int updateOne(User user) {
-        return 0;
+        return userDao.updateOne(user);
     }
 
     @Override
     public int deleteOne(User user) {
-        return 0;
+        return userDao.updateOne(user);
     }
 
     @Override
     public User findOne(Map<String, Object> paramMap) {
-        return null;
+        return userDao.findOne(paramMap);
     }
 
     @Override

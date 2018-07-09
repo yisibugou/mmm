@@ -1,16 +1,27 @@
 package com.mmm.develop.common.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 public class BaseController {
-    protected Map<String, Object> result = new HashMap<>();
-    
-    private String returnResult() {
-        return JSON.toJSONString(result);
+    protected Map<String, Object> paramMap = new HashMap<String, Object>();
+    protected JSONObject resultObj = new JSONObject();
+
+    /**
+     * 用于获取Map对象
+     * */
+    protected Map<String,Object> getParamMap() {
+        paramMap = new HashMap<>();
+        return paramMap;
     }
-    public String returnSuccess() {
-        result.put("success", true);
-        return returnResult();
+
+    /**
+     * 用于获取返回的JSONObject对象
+     * */
+    protected JSONObject getResultObj() {
+        resultObj = new JSONObject();
+        return resultObj;
     }
 }
