@@ -70,14 +70,14 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject login(@RequestBody String loginInfo) {
-        JSONObject reqjson=StringConvertUtil.toJSON(loginInfo);
+        JSONObject reqJson = StringConvertUtil.toJSON(loginInfo);
         paramMap = this.getParamMap();
         resultObj = this.getResultObj();
 
-        paramMap.put("account", reqjson.getString("account"));
+        paramMap.put("account", reqJson.getString("account"));
         User user = userService.loginService(paramMap);
         if (user != null){
-            String password = reqjson.getString("password");
+            String password = reqJson.getString("password");
             if (EncryptUtil.checkEncodeStr(password,user.getPassword())){
                 resultObj.put("errCode", 0);//0登录成功，1登录失败，2用户不存在
                 resultObj.put("id",user.getId());//前端缓存id

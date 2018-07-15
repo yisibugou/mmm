@@ -1,6 +1,5 @@
 package com.mmm.develop.common.util;
 
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
@@ -75,6 +74,7 @@ public class MailUtil {
     }
 
     public static void main(String args[]){
+        // 测试
         sendHtmlMail("1585195399@qq.com","澳门首家线上赌场上线了","给你不一样的全新体验");
         System.out.println("发送成功");
     }
