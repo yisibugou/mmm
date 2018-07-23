@@ -18,7 +18,7 @@ import java.util.List;
  * Created by Administrator on 2017/12/1.
  */
 @Service
-public class RedisConfig {
+public class RedisUtil {
 
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
