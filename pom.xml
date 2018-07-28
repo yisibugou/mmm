@@ -6,7 +6,7 @@
 	<groupId>com.mmm</groupId>
 	<artifactId>develop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>develop</name>
 	<description>Demo project for Spring Boot</description>
@@ -35,6 +35,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <!-- 打包WAR不用内置的tomcat -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!-- mybatis依赖 -->
         <dependency>

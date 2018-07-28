@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController extends BaseController {
     @Resource
     private UserService userService;
@@ -27,7 +28,7 @@ public class UserController extends BaseController {
     public JSONObject get(@RequestParam(value = "id") String id) {
     	paramMap = this.getParamMap();
     	resultObj = this.getResultObj();
-    	paramMap.put("phone", id);
+    	paramMap.put("id", id);
         User user = userService.findOneService(paramMap);
         if(user != null) {
             resultObj.put("data", user);
@@ -80,7 +81,9 @@ public class UserController extends BaseController {
             String password = reqJson.getString("password");
             if (EncryptUtil.checkEncodeStr(password,user.getPassword())){
                 resultObj.put("errCode", 0);//0登录成功，1登录失败，2用户不存在
-                resultObj.put("id",user.getId());//前端缓存id
+                Map<String, Object> para = new HashMap<>();
+                para.put("id", user.getId());
+                resultObj.put("user", user = userService.findOneService(para));//前端缓存id
 
                 user.setLastLoginTime(DateFormatUtil.formatDateTime(new Date()));
                 userService.updateOneService(user);
