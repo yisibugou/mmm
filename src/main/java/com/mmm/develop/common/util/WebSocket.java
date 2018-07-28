@@ -1,10 +1,5 @@
 package com.mmm.develop.common.util;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-import org.springframework.web.socket.server.standard.ServerEndpointExporter;
-
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -15,26 +10,16 @@ import javax.websocket.server.ServerEndpoint;
  * @ServerEndpoint 注解是一个类层次的注解，它的功能主要是将目前的类定义成一个websocket服务器端,
  * 注解的值将被用于监听用户连接的终端访问URL地址,客户端可以通过这个URL来连接到WebSocket服务器端
  */
-@ServerEndpoint("/webSocket")
-@Component
+@ServerEndpoint("/websocket")
 public class WebSocket {
-    @Configuration
-    public class WebSocketConfig {
-        @Bean
-        public ServerEndpointExporter serverEndpointExporter() {
-            return new ServerEndpointExporter();
-        }
-    }
-
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static int onlineCount = 0;
 
     //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
-    private static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<>();
+    private static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<WebSocket>();
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
-    private int userId;
 
     /**
      * 连接建立成功调用的方法
@@ -75,7 +60,6 @@ public class WebSocket {
                 continue;
             }
         }
-        onClose();
     }
 
     /**
