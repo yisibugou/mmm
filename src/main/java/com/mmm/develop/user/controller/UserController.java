@@ -6,9 +6,7 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mmm.develop.common.controller.BaseController;
-import com.mmm.develop.common.util.DateFormatUtil;
-import com.mmm.develop.common.util.EncryptUtil;
-import com.mmm.develop.common.util.StringConvertUtil;
+import com.mmm.develop.common.util.*;
 import com.mmm.develop.user.entity.User;
 import com.mmm.develop.user.service.UserService;
 
@@ -22,6 +20,8 @@ import javax.annotation.Resource;
 public class UserController extends BaseController {
     @Resource
     private UserService userService;
+    @Resource
+    private RedisUtil redisUtil;
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
@@ -92,6 +92,23 @@ public class UserController extends BaseController {
             }
         }else{
             resultObj.put("errCode", 2);//0登录成功，1登录失败，2用户不存在
+        }
+        return resultObj;
+    }
+
+    @RequestMapping(value = "/sendEmailCode", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject sendEmailCode(@RequestBody String param) {
+        JSONObject reqJson = StringConvertUtil.toJSON(param);
+        paramMap = this.getParamMap();
+        resultObj = this.getResultObj();
+        String email = reqJson.getString("email");
+        int code = (int)((Math.random()*9+1)*100000);
+        if( email == null || "".equals(email) ) resultObj.put("errCode", 1);
+        else {
+            MailUtil.sendHtmlMail(email, "万事屋——注册验证码", "您好，您的邮箱验证码是：" + code + "，若非本人操作，请忽略！");
+            redisUtil.put(email, code + "", 60);
+            resultObj.put("errCode", 0);
         }
         return resultObj;
     }
