@@ -53,9 +53,9 @@ public class MmmApplicationTests {
 
     @Test
     public void test6() throws Exception {
-        //userMapper.insertSelective(user1);
+/*        //userMapper.insertSelective(user1);
         log.info("[put] - [{}]", redisUtil.put("test","1111"));
         // userMapper.insertSelective(user2);
-        log.info("[get] - [{}]", redisUtil.get("test"));
+        log.info("[get] - [{}]", redisUtil.get("test"));*/
     }
 }

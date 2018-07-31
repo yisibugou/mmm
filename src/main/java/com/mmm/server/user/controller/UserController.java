@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController extends BaseController {
     @Resource
     private UserService userService;
@@ -71,15 +72,26 @@ public class UserController extends BaseController {
         JSONObject reqJson = StringConvertUtil.toJSON(loginInfo);
         paramMap = this.getParamMap();
         resultObj = this.getResultObj();
-        ;
+
         User user = new User();
-        user.setUserName(reqJson.getString("account"));
+        String account = reqJson.getString("account");
+        user.setUserName(account);
         user = userService.findOneService(user);
+        if( user == null ) {
+            user = new User();
+            user.setPhone(account);
+            user = userService.findOneService(user);
+        }
+        if( user == null ) {
+            user = new User();
+            user.setEmail(account);
+            user = userService.findOneService(user);
+        }
         if (user != null){
             String password = reqJson.getString("password");
             if (EncryptUtil.checkEncodeStr(password,user.getPassword())){
                 resultObj.put("errCode", 0);//0登录成功，1登录失败，2用户不存在
-                resultObj.put("id",user.getId());//前端缓存id
+                resultObj.put("user", user);//前端缓存id
 
                 user.setLastLoginTime(DateFormatUtil.formatDateTime(new Date()));
                 userService.updateOneService(user);
