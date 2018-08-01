@@ -1,9 +1,9 @@
 package com.mmm.server.user.service;
 
-import com.mmm.server.common.service.BaseService;
-import com.mmm.server.user.entity.User;
+import com.alibaba.fastjson.JSONObject;
 
-import java.util.Map;
-
-public interface UserService extends BaseService<User> {
+public interface UserService {
+    JSONObject registerService( JSONObject reqJson);
+    JSONObject loginService( JSONObject reqJson);
+    JSONObject getService(long id);
 }

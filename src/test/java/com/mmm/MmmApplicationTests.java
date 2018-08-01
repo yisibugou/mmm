@@ -36,8 +36,8 @@ public class MmmApplicationTests {
     private RedisUtil redisUtil;
     @Before
     public void setUp() throws Exception {
-        this.propertiesUrl1 = new URL("http://localhost:" + port + "/mmm/1");
-        this.propertiesUrl2 = new URL("http://localhost:" + port + "/mmm/2");
+        this.propertiesUrl1 = new URL("http://localhost:" + port + "/mmm/get?id=1");
+        this.propertiesUrl2 = new URL("http://localhost:" + port + "/mmm/get?id=2");
     }
 
     @Test

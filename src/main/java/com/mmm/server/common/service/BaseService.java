@@ -2,39 +2,25 @@ package com.mmm.server.common.service;
 
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
+public class BaseService {
+    protected Map<String, Object> paramMap = new HashMap<String, Object>();
+    protected JSONObject resultObj = new JSONObject();
 
-public interface BaseService<T> {
-	/**
-	 * 新增一个对象
-	 * 
-	 * @param t
-	 * @return int
-	 * */
-	JSONObject insertOneService(T t);
+    /**
+     * 用于获取Map对象
+     * */
+    protected Map<String,Object> getParamMap() {
+        paramMap = new HashMap<>();
+        return paramMap;
+    }
 
-	/**
-	 * 修改一个对象
-	 * 
-	 * @param t
-	 * @return int
-	 * */
-	JSONObject updateOneService(T t);
-
-	/**
-	 * 删除一个对象
-	 * 
-	 * @param paramMap
-	 * @return int
-	 * */
-	JSONObject deleteOneService(Map<String, Object> paramMap);
-
-	/**
-	 * 查询一个对象(名称或id)
-	 * 
-	 * @param t
-	 * @return T
-	 * */
-	T findOneService(T t);
+    /**
+     * 用于获取返回的JSONObject对象
+     * */
+    protected JSONObject getResultObj() {
+        resultObj = new JSONObject();
+        return resultObj;
+    }
 }
