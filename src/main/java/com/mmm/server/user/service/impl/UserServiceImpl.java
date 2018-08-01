@@ -15,7 +15,7 @@ import java.util.Date;
 @Service(value = "userService")
 public class UserServiceImpl extends BaseService implements UserService{
     @Resource
-    private UserDao userService;
+    private UserDao userDao;
 
     @Override
     public JSONObject registerService(JSONObject reqJson) {
@@ -31,8 +31,8 @@ public class UserServiceImpl extends BaseService implements UserService{
         }
 
         user.setPassword(EncryptUtil.encodeStr(reqJson.getString("password")));
-        if (userService.findOne(user)==null) {
-            resultObj = userService.insertOne(user);
+        if (userDao.findOne(user)==null) {
+            resultObj = userDao.insertOne(user);
         }else {
             resultObj.put("data", "用户已存在");
         }
@@ -46,16 +46,16 @@ public class UserServiceImpl extends BaseService implements UserService{
         User user = new User();
         String account = reqJson.getString("account");
         user.setUserName(account);
-        user = userService.findOne(user);
+        user = userDao.findOne(user);
         if( user == null) {
             user = new User();
             user.setPhone(account);
-            user = userService.findOne(user);
+            user = userDao.findOne(user);
         }
         if( user == null) {
             user = new User();
             user.setEmail(account);
-            user = userService.findOne(user);
+            user = userDao.findOne(user);
         }
         if (user != null){
             String password = reqJson.getString("password");
@@ -64,7 +64,7 @@ public class UserServiceImpl extends BaseService implements UserService{
                 resultObj.put("user", user);//前端缓存id
 
                 user.setLastLoginTime(DateFormatUtil.formatDateTime(new Date()));
-                userService.updateOne(user);
+                userDao.updateOne(user);
             }else {
                 resultObj.put("errCode", 1);//0登录成功，1登录失败，2用户不存在
             }
@@ -80,7 +80,7 @@ public class UserServiceImpl extends BaseService implements UserService{
         resultObj = this.getResultObj();
         User user = new User();
         user.setId(id);
-        user = userService.findOne(user);
+        user = userDao.findOne(user);
         if(user != null) {
             resultObj.put("data", user);
             resultObj.put("errCode", 0);//0存在
