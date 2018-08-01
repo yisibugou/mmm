@@ -3,7 +3,6 @@ package com.mmm.server.user.controller;
 import com.alibaba.fastjson.JSONObject;
 
 import com.mmm.server.common.util.StringConvertUtil;
-import com.mmm.server.user.entity.User;
 import com.mmm.server.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
