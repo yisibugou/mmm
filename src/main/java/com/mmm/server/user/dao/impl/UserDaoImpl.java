@@ -19,7 +19,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public JSONObject insertOne(User user) {
         JSONObject resultJSON = new JSONObject();
-        JSONObject dataJSON = new JSONObject();
         int res = userMapper.insertSelective(user);
         if (res == 1) {
             resultJSON.put("error_code", "0");
@@ -32,7 +31,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public JSONObject updateOne(User user) {
         JSONObject resultJSON = new JSONObject();
-        JSONObject dataJSON = new JSONObject();
         int res = userMapper.updateByPrimaryKeySelective(user);
         if (res == 1) {
             resultJSON.put("error_code", "0");
@@ -45,7 +43,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public JSONObject deleteOne(Map<String, Object> paramMap) {
         JSONObject resultJSON = new JSONObject();
-        JSONObject dataJSON = new JSONObject();
         int res = userMapper.deleteByPrimaryKey(paramMap.get("id"));
         if (res == 1) {
             resultJSON.put("error_code", "0");
