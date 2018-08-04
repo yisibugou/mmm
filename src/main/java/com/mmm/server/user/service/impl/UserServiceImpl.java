@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.mmm.server.common.service.BaseService;
 import com.mmm.server.common.util.DateFormatUtil;
 import com.mmm.server.common.util.EncryptUtil;
+import com.mmm.server.common.util.MailUtil;
+import com.mmm.server.common.util.RedisUtil;
 import com.mmm.server.user.dao.UserDao;
 import com.mmm.server.user.entity.User;
 import com.mmm.server.user.service.UserService;
@@ -16,27 +18,39 @@ import java.util.Date;
 public class UserServiceImpl extends BaseService implements UserService{
     @Resource
     private UserDao userDao;
+    @Resource
+    private RedisUtil redisUtil;
 
     @Override
     public JSONObject registerService(JSONObject reqJson) {
         resultObj = this.getResultObj();
         int reqType = reqJson.getInteger("reqType");
         User user = new User();
+
+        // 判断用户是否存在
         if (reqType == 0){//0为邮箱注册，1为手机号注册
             user.setEmail(reqJson.getString("email"));
-            resultObj.put("errCode", 2);//0注册成功，1注册失败，2用户邮箱存在，3为手机号存在,4为验证码不正确
+            if(userDao.findOne(user) != null) {
+                resultObj.put("errCode", 2);//0注册成功，1注册失败，2用户邮箱存在，3为手机号存在,4为验证码不正确
+                return resultObj;
+            }
         }else {
             user.setPhone(reqJson.getString("phone"));
-            resultObj.put("errCode", 3);//0注册成功，1注册失败，2用户邮箱存在，3为手机号存在,4为验证码不正确
+            if(userDao.findOne(user) != null) {
+                resultObj.put("errCode", 3);
+                return resultObj;
+            }
         }
-
+        // 判断验证码
+        String codeRedis = (String)redisUtil.get(reqType == 0 ? reqJson.getString("email") :
+                reqJson.getString("phone"));
+        if(codeRedis == null || Integer.parseInt(codeRedis) != reqJson.getInteger("code")) {
+            resultObj.put("errCode", 4);
+            return resultObj;
+        }
         user.setPassword(EncryptUtil.encodeStr(reqJson.getString("password")));
-        if (userDao.findOne(user)==null) {
-            resultObj = userDao.insertOne(user);
-        }else {
-            resultObj.put("data", "用户已存在");
-        }
-
+        user.setUserName("万事屋客人");
+        resultObj.put("errCode", Integer.parseInt(userDao.insertOne(user).getString("error_code")));
         return  resultObj;
     }
 
@@ -88,6 +102,31 @@ public class UserServiceImpl extends BaseService implements UserService{
             resultObj.put("errCode", 1);
             resultObj.put("data", "用户不存在");//1不存在
         }
+        return resultObj;
+    }
+
+    @Override
+    public JSONObject sendEmailCodeService(String email) {
+        resultObj = this.getResultObj();
+        int code = (int)((Math.random()*9+1)*100000);
+        redisUtil.put(email, code+"", 300);
+        MailUtil.sendHtmlMail(email,"万事通注册验证码","【万事通】感谢注册万事通，验证码：" +
+                code+"，输入即可完成注册，此条有效时间为5分钟。如非本人发起请忽略。");
+        resultObj.put("errCode", 0);
+        return resultObj;
+    }
+
+    @Override
+    public JSONObject isRegisteredService(JSONObject reqJson) {
+        resultObj = this.getResultObj();
+        int reqType = reqJson.getInteger("reqType");
+        User user = new User();
+        resultObj.put("errCode", 0);
+        // 判断用户是否存在
+        // 0为邮箱注册，1为手机号注册
+        if (reqType == 0) user.setEmail(reqJson.getString("email"));
+        else user.setPhone(reqJson.getString("phone"));
+        if(userDao.findOne(user) != null) resultObj.put("errCode", 1);
         return resultObj;
     }
 }

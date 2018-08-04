@@ -33,4 +33,18 @@ public class UserController{
         JSONObject reqJson = StringConvertUtil.toJSON(loginInfo);
         return userService.loginService(reqJson);
     }
+
+    @PostMapping(value = "/sendEmailCode")
+    @ResponseBody
+    public JSONObject sendEmailCode(@RequestBody String Info) {
+        JSONObject reqJson = StringConvertUtil.toJSON(Info);
+        return userService.sendEmailCodeService(reqJson.getString("email"));
+    }
+
+    @PostMapping(value = "/isRegistered")
+    @ResponseBody
+    public JSONObject isRegistered(@RequestBody String Info) {
+        JSONObject reqJson = StringConvertUtil.toJSON(Info);
+        return userService.isRegisteredService(reqJson);
+    }
 }

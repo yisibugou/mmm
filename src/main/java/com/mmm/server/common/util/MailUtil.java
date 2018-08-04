@@ -58,7 +58,7 @@ public class MailUtil {
         try {
             messageHelper = new MimeMessageHelper(mimeMessage,
                     true, "UTF-8");
-            messageHelper.setFrom(EMAILFORM, "系统名称");
+            messageHelper.setFrom(EMAILFORM, "万事通");
             messageHelper.setTo(to);
             messageHelper.setSubject(subject);
             messageHelper.setText(html, true);
